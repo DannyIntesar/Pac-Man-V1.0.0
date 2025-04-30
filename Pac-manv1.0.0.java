@@ -159,46 +159,51 @@ public class AH extends JPanel implements KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
-        if (gameOver || gameWon) return;
 
-        int key = e.getKeyCode();
+}
 
-        switch (key) {
-            case KeyEvent.VK_UP:
-                if (pacmanY > 0 && board[pacmanY - 1][pacmanX] != 1) pacmanY--;
-                break;
-            case KeyEvent.VK_DOWN:
-                if (pacmanY < board.length - 1 && board[pacmanY + 1][pacmanX] != 1) pacmanY++;
-                break;
-            case KeyEvent.VK_LEFT:
-                if (pacmanX > 0 && board[pacmanY][pacmanX - 1] != 1) pacmanX--;
-                break;
-            case KeyEvent.VK_RIGHT:
-                if (pacmanX < board[0].length - 1 && board[pacmanY][pacmanX + 1] != 1) pacmanX++;
-                break;
-        }
+@Override
+public void keyReleased(KeyEvent e) {
+    if (gameOver || gameWon) return;
 
-        if (board[pacmanY][pacmanX] == 2) {
-            board[pacmanY][pacmanX] = 0;
-            score += 10;
-            saveScore();
-        }
+    int key = e.getKeyCode();
 
-        checkGhostCollision();
+    switch (key) {
+        case KeyEvent.VK_UP:
+            if (pacmanY > 0 && board[pacmanY - 1][pacmanX] != 1) pacmanY--;
+            break;
+        case KeyEvent.VK_DOWN:
+            if (pacmanY < board.length - 1 && board[pacmanY + 1][pacmanX] != 1) pacmanY++;
+            break;
+        case KeyEvent.VK_LEFT:
+            if (pacmanX > 0 && board[pacmanY][pacmanX - 1] != 1) pacmanX--;
+            break;
+        case KeyEvent.VK_RIGHT:
+            if (pacmanX < board[0].length - 1 && board[pacmanY][pacmanX + 1] != 1) pacmanX++;
+            break;
 
-        if (allPelletsCollected()) {
-            gameWon = true;
-            ghostTimer.stop();
-        }
-
-        repaint();
     }
 
-    @Override
-    public void keyReleased(KeyEvent e) {}
+    if (board[pacmanY][pacmanX] == 2) {
+        board[pacmanY][pacmanX] = 0;
+        score += 10;
+        saveScore();
+    }
 
-    @Override
-    public void keyTyped(KeyEvent e) {}
+    checkGhostCollision();
+
+    if (allPelletsCollected()) {
+        gameWon = true;
+        ghostTimer.stop();
+    }
+
+    repaint();
+}
+
+@Override
+public void keyTyped(KeyEvent e) {
+
+    }
 
     private void saveScore() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(SCORE_FILE))) {
